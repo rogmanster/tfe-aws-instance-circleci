@@ -10,9 +10,18 @@ jobs:
       - run:
           name: terraform init & plan
           command: |
-            pwd
-            ls
-            echo $'terraform {\n  cloud {\n    organization = \"rogercorp\"\n\n    workspaces {\n      name = \"aws-instance-circleci\"\n    }\n  }\n}' > remote.tf
+            cat <<EOF > remote.tf
+            terraform {
+              cloud {
+                organization = "$TF_CLOUD_ORGANIZATION"
+
+                workspaces {
+                  name = "$TF_WORKSPACE"
+                }
+              }
+            }
+            EOF
+            cat remote.tf        
             terraform init -input=false
             terraform plan
       - persist_to_workspace:
