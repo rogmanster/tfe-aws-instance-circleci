@@ -9,9 +9,10 @@ jobs:
       - checkout
       - run:
           name: terraform init & plan
-          command: >-
-            echo 'terraform {\n  cloud {\n    organization = \"rogercorp\"\n\n    workspaces {\n      name = \"aws-instance-circleci\"\n    }\n  }\n}' > remote.tf
           command: |
+            pwd
+            ls
+            echo 'terraform {\n  cloud {\n    organization = \"rogercorp\"\n\n    workspaces {\n      name = \"aws-instance-circleci\"\n    }\n  }\n}' > remote.tf
             terraform init -input=false
             terraform plan
       - persist_to_workspace:
