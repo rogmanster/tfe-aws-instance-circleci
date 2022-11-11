@@ -12,8 +12,7 @@ jobs:
           command: |
             pwd
             ls
-            echo 'terraform {\n  cloud {\n    organization = \"rogercorp\"\n\n    workspaces {\n      name = \"aws-instance-circleci\"\n    }\n  }\n}' > remote.tf
-            terraform init -input=false
+            echo $'terraform {\n  cloud {\n    organization = \"rogercorp\"\n\n    workspaces {\n      name = \"aws-instance-circleci\"\n    }\n  }\n}' > remote.tf            terraform init -input=false
             terraform plan
       - persist_to_workspace:
           root: .
