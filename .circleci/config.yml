@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  plan-apply:
+  plan:
     working_directory: /tmp/project
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
@@ -61,14 +61,14 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply
-      - hold-apply:
+      - plan
+      - hold:
           type: approval
-          requires:
-            - plan-apply
+#          requires:
+#            - plan-apply
       - apply:
           requires:
-            - hold-apply
+            - plan
 #      - plan-destroy:
 #          requires:
 #            - apply
