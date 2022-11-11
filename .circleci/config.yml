@@ -1,21 +1,38 @@
+version: '2.1'
 orbs:
-  terraform: frameio/terraform@0.15.0
-version: 2.1
-workflows:
-  plan:
-    jobs:
+  terraform: circleci/terraform@3.1
+jobs:
+  single-job-lifecycle:
+    executor: terraform/default
+    steps:
+      - checkout
+      - run:
+          command: >-
+            echo "credentials \"app.terraform.io\" {token =
+            \"$TF_TOKEN_app_terraform_io\"}" > $HOME/.terraformrc
+          name: Create .terraformrc file locally
+      - terraform/install:
+          arch: amd64
+          os: linux
+          terraform_version: 0.14.2
+      - terraform/fmt:
+          path: .
+      - terraform/validate:
+          path: .
       - terraform/init:
-          filters:
-            branches:
-              only:
-                - main
+          backend: true
+          backend_config_file: backend.hcl
+          path: .
       - terraform/plan:
-          requires:
-            - terraform/init
-      - approval:
-          requires:
-            - terraform/plan
-          type: approval
+          backend_config_file: backend.hcl
+          path: .
       - terraform/apply:
-          requires:
-            - approval
+          backend_config_file: backend.hcl
+          path: .
+      - terraform/destroy:
+          path: .
+    working_directory: ~/src
+workflows:
+  single-job-lifecycle:
+    jobs:
+      - single-job-lifecycle
