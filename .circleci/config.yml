@@ -27,6 +27,7 @@ jobs:
           name: terraform
           command: |
             pwd
+            ls
             terraform apply -auto-approve
       - persist_to_workspace:
           root: .
