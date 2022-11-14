@@ -45,7 +45,7 @@ jobs:
           root: .
           paths:
             - .
-            
+
 workflows:
   version: 2
   plan_approve_apply:
